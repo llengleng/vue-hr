@@ -7,25 +7,39 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
   const routes = [
+  // {
+  //     path: "/",
+  //     redirect: '/login'
+  // },
   {
-      path: "/",
-      redirect: '/login'
-  },
-  {
-    path: "/login",
-    name:"登录",
+    path: "/",
+    name: "登录",
     component: () => import('../views/Login.vue'),
     hidden: true
   },
   {
     path:"/home",
-    name:"主页",
+    name:"首页",
     component: () => import("../views/Home.vue"),
     hidden: true
   }
-
- 
 ]
+
+
+
+// const routes = [
+//   {
+//    path: '/',
+//    name: 'Login', 
+//    component: Login, 
+//    hidden: true 
+//   },{ 
+//    path: '/home',
+//    name: 'Home', 
+//    component: Home, 
+//    hidden: true 
+//   }
+// ]
 
 const router = new VueRouter({
   routes

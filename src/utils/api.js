@@ -45,7 +45,7 @@ export const postKeyValueRequest = (url,params) =>{
     })
 }
 
-export const postRequst = (url,params) => {
+export const postRequest = (url,params) => {
     return axios({
         method:'post',
         url:`${base}${url}`,
@@ -59,14 +59,14 @@ export const getRequest = (url,params) => {
         data:params
     })
 }
-export const putRequst = (url,params) => {
+export const putRequest = (url,params) => {
     return axios({
         method:'put',
         url:`${base}${url}`,
         data:params
     })
 }
-export const deleteRequst = (url,params) => {
+export const deleteRequest = (url,params) => {
     return axios({
         method:'delete',
         url:`${base}${url}`,

@@ -12,7 +12,7 @@
         <el-input v-model="loginForm.username" prefix-icon="iconfont icon-mima"></el-input>
       </el-form-item>
       <el-form-item label prop="password">
-        <el-input v-model="loginForm.password" show-password prefix-icon="iconfont icon-ren"></el-input>
+        <el-input v-model="loginForm.password" show-password prefix-icon="iconfont icon-ren" @keydown.enter.native="login"></el-input>
       </el-form-item>
       <el-checkbox v-model="checked" class="login_rem">记住我</el-checkbox>
       <el-form-item class="login-btn">
@@ -82,7 +82,8 @@ export default {
         }
       })
 
-
+      // let path = this.route.query.redirect
+      // this.$router.replace((path === '/' || path === undefined) ? '/home' : path)
 
 
 
@@ -115,7 +116,7 @@ export default {
       this.$refs.loginFormRef.resetFields();
     }
   }
-};
+}
 </script>
 
 <style scoped>
