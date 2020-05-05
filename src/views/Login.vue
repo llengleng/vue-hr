@@ -6,6 +6,8 @@
       ref="loginFormRef"
       label-width="0px"
       class="login"
+      v-loading="loading"
+      element-loading-text="拼命加载中"
     >
       <h3 class="login_title">系统登录</h3>
       <el-form-item label prop="username">
@@ -13,6 +15,11 @@
       </el-form-item>
       <el-form-item label prop="password">
         <el-input v-model="loginForm.password" show-password prefix-icon="iconfont icon-ren" @keydown.enter.native="login"></el-input>
+      </el-form-item>
+       <el-form-item  prop="code">
+        <el-input v-model="loginForm.code" prefix-icon="iconfont icon-ren"
+        placeholder="点击图片刷新验证码" style="width:220px; margin-right:5px" @keydown.enter.native="login"></el-input>
+        <el-image :src="codeUrl" @click="refreshCode" alt="加载失败" style="cursor:pointer" v-loading="loading" element-loading-text="aaaa"></el-image>
       </el-form-item>
       <el-checkbox v-model="checked" class="login_rem">记住我</el-checkbox>
       <el-form-item class="login-btn">
@@ -28,11 +35,14 @@ export default {
   name: "Login",
   data() {
     return {
+      loading:false,
       checked: true,
       loginForm: {
         username: "admin",
-        password: "123"
+        password: "123",
+        code:''
       },
+      codeUrl:'/verifyCode?time' + new Date().getTime(),
       loginRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -41,7 +51,8 @@ export default {
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" }
-        ]
+        ],
+        code:[{required:true,$message:"请输入验证码",trigger:"blur"}]
       }
     };
   },
@@ -68,7 +79,9 @@ export default {
         if (!valid) {
           return this.$message.error('用户名或密码格式不正确，请重新输入')
         }
+        this.loading = true;
         const resp = await this.postKeyValueRequest('/doLogin', this.loginForm)
+        this.loading = false;
         console.log(resp)
         if (resp) {
           console.log(resp.obj)
@@ -79,6 +92,8 @@ export default {
           window.sessionStorage.setItem('user', JSON.stringify(resp.obj));
           // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
           this.$router.replace('/home')
+        }else{
+          this.refreshCode()
         }
       })
 
@@ -111,6 +126,11 @@ export default {
       //   })
       // });
     },
+    refreshCode(){  
+       this.loading = true;
+      this.codeUrl = '/verifyCode?time=' + new Date().getTime()
+       this.loading = false;
+    },
     reset() {
       console.log(this.$refs)
       this.$refs.loginFormRef.resetFields();
@@ -119,7 +139,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 .login {
   width: 350px;
   border: 1px solid #eaeaea;
@@ -145,6 +165,10 @@ export default {
 .login-btn {
   display: flex;
   justify-content: flex-end;
+}
+.el-form-item__content{
+  display: flex;
+  align-items: center;
 }
 </style>
   
